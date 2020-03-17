@@ -1,0 +1,42 @@
+---
+- name: Install Semantic MediaWiki via composer
+  composer:
+    command: "require"
+    arguments: "mediawiki/semantic-media-wiki {{ smwver_minor }} --update-no-dev"
+    working_dir: "{{ mw_dir }}"
+- name: Update MediaWiki database
+  command: php {{ mw_dir }}/maintenance/update.php
+- name: Enable Semantic MediaWiki in MediaWiki settings file
+  lineinfile:
+    line="enableSemantics( 'localhost:8080' );"
+    dest={{ mw_dir }}/LocalSettings.php
+    state=present
+- name: Enable the Factbox to be shown on pages with semantic content
+  lineinfile:
+    line="$smwgShowFactbox = SMW_FACTBOX_NONEMPTY;"
+    dest={{ mw_dir }}/LocalSettings.php
+    state=present
+- name: Create folder for PageForms
+  file:
+      dest={{ mw_dir }}/extensions/PageForms
+      state=directory
+- name: Checkout Page Forms via git
+  git:
+      repo=https://gerrit.wikimedia.org/r/p/mediawiki/extensions/PageForms
+      dest={{ mw_dir }}/extensions/PageForms
+      update=yes
+#- name: Download Semantic Forms zip file
+#  get_url:
+#      url=https://github.com/wikimedia/mediawiki-extensions-SemanticForms/archive/3.6.zip
+#      dest={{ mw_dir }}/extensions/semantic_forms_3.6.zip
+#      mode=0440
+#- name: Unpack Semantic Forms zip file
+#  unarchive:
+#      src={{ mw_dir }}/extensions/semantic_forms_3.6.zip
+#      dest={{ mw_dir }}/extensions/SemanticForms
+#      copy=no
+- name: Enable Page Forms in MediaWiki settings file
+  lineinfile:
+    line='include_once "$IP/extensions/PageForms/PageForms.php";'
+    dest={{ mw_dir }}/LocalSettings.php
+    state=present

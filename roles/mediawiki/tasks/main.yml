@@ -1,0 +1,48 @@
+---
+- name: Download MediaWiki
+  get_url:
+    url=http://releases.wikimedia.org/mediawiki/{{mwver_major}}/mediawiki-{{mwver_minor}}.tar.gz
+    dest=/vagrant/mediawiki-{{mwver_minor}}.tar.gz
+    mode=0440
+- name: Unpack MediaWiki tarball
+  unarchive:
+    src=/vagrant/mediawiki-{{mwver_minor}}.tar.gz
+    dest=/vagrant
+    copy=no # Don't copy from local machine
+- name: Rename unarchived MediaWiki folder (to w)
+  command:
+    creates=/vagrant/w
+    mv /vagrant/mediawiki-{{mwver_minor}} /vagrant/w
+- name: Symlink MediaWiki folder into webserver folder
+  file:
+    src=/vagrant/w
+    dest=/var/www/html/w
+    state=link
+- name: Create MySQL database
+  mysql_db:
+    name=smw
+    state=present
+- name: Create MySQL user
+  mysql_user:
+    name=smw
+    password=changethis
+    priv=smw.*:ALL
+    state=present
+- name: Change user & group for wiki folder
+  file:
+    path=/vagrant/w
+    owner=www-data
+    group=www-data
+    recurse=yes
+- name: Install MediaWiki database
+  command:
+      php /var/www/html/w/maintenance/install.php --scriptpath=/w --dbname=smw --dbuser=smw --dbpass=changethis --installdbuser=root --installdbpass= --pass=changethis MW admin
+      creates=/var/www/html/w/LocalSettings.php
+- name: Change user & group of LocalSettings.php
+  file:
+    path=/var/www/html/w/LocalSettings.php
+    owner=www-data
+    group=www-data
+- name: Print location of wiki
+  debug:
+    msg: "You can see your wiki, by entering in a browser: http://localhost:8080/w/index.php/Main_Page"
