@@ -44,3 +44,10 @@ If this still does not help, you can also try:
 - Choose "Programs and features"
 - Choose "Add or remove features in Windows"
 - Disable "Hyper-V"
+
+## Acknowledgements
+
+The development of this project is sponsored by:
+
+- [Savantic AB](https://savantic.eu/)
+- [RIL Partner AB](https://rilpartner.com/)
