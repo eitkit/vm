@@ -10,6 +10,17 @@ a single command (given that you have the required dependencies installed):
 vagrant up
 ```
 
+This will fail after a while because some user files do not exist. You will
+then need to do the following to continue:
+
+- Open VirtualBox
+- Right-click on the (now running) virtual machine
+- Select "Show"
+- Log in to Xubuntu with vagrant and vagrant.
+- Then go back to the shell where you were running `vagrant up`, and now run `vagrant provision`.
+
+After this step is finished, the virtual machine should be ready to use.
+
 ## Required dependencies
 
 To build the virtual machine in this recipe, you need the following software installed:
