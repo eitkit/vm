@@ -48,5 +48,5 @@
       - { role: dotfiles, tags: ['dotfiles'] }
       - { role: desktop, tags: ['desktop'] }
       - { role: miniconda, tags: ['miniconda'] }
-      - { role: mllibs, tags: ['mllibs'] }
+      - { role: python-datascience, tags: ['python-datascience'] }
       #- { role: pycharm, tags: ['pycharm'] } # Inactivated for now.
