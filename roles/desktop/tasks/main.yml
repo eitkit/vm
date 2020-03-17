@@ -1,0 +1,64 @@
+---
+- name: Install selected parts from the Xubuntu Desktop Environment
+  apt: name={{ item }} state=present
+  with_items:
+    - xubuntu-core
+    - lightdm
+    - lightdm-gtk-greeter
+    - thunar
+    - thunar-volman
+    - unzip
+    - update-manager
+    - xdg-user-dirs
+    - xdg-user-dirs-gtk
+    - xdg-utils
+    - xfce4-appfinder
+    - xfce4-notifyd
+    - xfce4-panel
+    - xfce4-session
+    - xfce4-settings
+    - xfdesktop4
+    - xfwm4
+    - xkb-data
+    - xorg
+    - xterm
+    - xubuntu-core
+    - xubuntu-default-settings
+    - zenity
+    - zip
+    - firefox
+    - make
+    - gnome-terminal
+    - gnome-system-monitor
+    - virtualbox-guest-utils
+    - zenity
+    - evince
+    - gedit
+    - xfce4-xkb-plugin
+  become: true
+- name: Create Pictures folder
+  file:
+      path: "{{ home }}/Pictures"
+      state: directory
+      mode: 0755
+#- name: Copy desktop wallpaper to Pictures folder
+#  copy:
+#      src: WallPaper.png
+#      dest: "{{ home }}/Pictures/WallPaper.png"
+#- name: Set desktop wallpaper
+#  command: xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitor0/image-path --set /home/vagrant/Pictures/WallPaper.png
+#- name: Set desktop wallpaper (last-image)
+#  command: xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitor0/workspace0/last-image --set /home/vagrant/Pictures/WallPaper.png
+- name: Set keyboard layouts
+  copy:
+      src: keyboard-layout.xml
+      dest: "{{ home }}/.config/xfce4/xfconf/xfce-perchannel-xml/keyboard-layout.xml"
+      mode: 0644
+      owner: vagrant
+      group: vagrant
+      force: yes
+- name: Add keyboard layout switcher to XFCE panel
+  copy:
+      src: xfce4-panel.xml
+      dest: /home/vagrant/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
+      force: yes

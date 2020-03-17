@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Jupyter Notebook
+Comment=
+Exec=/home/vagrant/miniconda3/bin/jupyter notebook --ip=127.0.0.1
+Icon=accessories-text-editor
+Path=/home/vagrant/Desktop/course_samtrafiken
+Terminal=false
+StartupNotify=false

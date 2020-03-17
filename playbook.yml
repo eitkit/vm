@@ -1,0 +1,52 @@
+---
+- hosts: all
+  vars:
+      home: /home/vagrant
+      document_root: /vagrant
+      course_dir: "{{ home }}/Desktop/course"
+  gather_facts: no
+  pre_tasks:
+      - name: 'install python2'
+        raw: apt-get -y install python
+        become: true
+      - name: Symlink sh to bash rather than dash
+        file: src=/bin/bash dest=/bin/sh state=link force=true
+        become: true
+      - name: Update apt cache and optionally upgrade
+        apt:
+          update_cache=yes
+          cache_valid_time=7200
+          #upgrade=yes # Uncomment this to force full upgrade!
+        become: true
+      - name: Install stuff from Aptitude
+        apt: name={{ item }} state=present
+        with_items:
+         - bash-completion # Not included in the docker image
+         - exuberant-ctags
+         - git
+         - htop
+         - make
+         - man-db
+         - tig
+         - tmux
+         - tree
+         - vim
+         - zip
+         - virtualbox-guest-x11
+         - xfconf
+        become: true
+      - name: Make sure resolv.conf is a file, not symlink
+        command: bash -c 'if [[ -h /etc/resolv.conf ]]; then rm /etc/resolv.conf; cp /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf; fi;'
+        become: true
+      - name: Set an external name server
+        lineinfile:
+            path: /etc/resolv.conf
+            regexp: '^nameserver'
+            line: 'nameserver 10.0.2.3'
+        become: true
+  roles:
+      - { role: dotfiles, tags: ['dotfiles'] }
+      - { role: desktop, tags: ['desktop'] }
+      - { role: miniconda, tags: ['miniconda'] }
+      - { role: mllibs, tags: ['mllibs'] }
+      #- { role: pycharm, tags: ['pycharm'] } # Inactivated for now.

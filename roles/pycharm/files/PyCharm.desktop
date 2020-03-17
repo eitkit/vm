@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PyCharm
+Comment=
+Exec=/home/vagrant/opt/pycharm/bin/pycharm.sh
+Icon=accessories-text-editor
+Path=/home/vagrant/opt/pycharm/run
+Terminal=false
+StartupNotify=false

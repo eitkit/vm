@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Spyder
+Comment=
+Exec=/home/vagrant/miniconda3/bin/spyder -w ~/Desktop/course_samtrafiken
+Icon=accessories-text-editor
+Path=/home/vagrant/Desktop/course_samtrafiken
+Terminal=false
+StartupNotify=false
+Name[en_US]=Spyder

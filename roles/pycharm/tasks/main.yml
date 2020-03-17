@@ -1,0 +1,31 @@
+---
+- name: Create ~/opt directory
+  file:
+      path: "{{ home }}/opt"
+      state: directory
+- name: Download the PyCharm tarball
+  get_url:
+      url: https://download.jetbrains.com/python/pycharm-community-2019.3.3.tar.gz
+      dest: "{{ document_root }}/pycharm-community-2019.3.3.tar.gz"
+      mode: 0540
+- name: Extract the PyCharm tarball
+  unarchive:
+      src: "{{ document_root }}/pycharm-community-2019.3.3.tar.gz"
+      dest: "{{ home }}/opt"
+      remote_src: yes
+      creates: "{{ home }}/opt/pycharm-community-2019.3.3"
+- name: Link pycharm folder
+  file:
+    src: "{{ home }}/opt/pycharm-community-2019.3.3"
+    dest: "{{ home }}/opt/pycharm"
+    state: link
+- name: Add pycharm bin folder to PATH
+  lineinfile:
+      path: "{{ home }}/.bashrc_mods"
+      regexp: 'pycharm'
+      line: "export PATH=~/opt/pycharm/bin:$PATH"
+- name: Add PyCharm shortcut on desktop
+  copy:
+      src: PyCharm.desktop
+      dest: "{{ home }}/Desktop/PyCharm.desktop"
+      mode: 0775

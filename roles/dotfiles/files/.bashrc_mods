@@ -1,0 +1,23 @@
+HISTSIZE=10000
+HISTFILESIZE=10000
+
+if [[ $SHELL = "/bin/bash" ]]; then
+	source /etc/bash_completion;
+fi;
+
+if [ -f ~/.bashrc_local ]; then
+	. ~/.bashrc_local;
+fi
+if [ -f ~/.bash_aliases ]; then
+	. ~/.bash_aliases;
+fi
+if [ -f ~/.bash_aliases_local ]; then
+	. ~/.bash_aliases_local;
+fi
+
+export PS1="[\u \W]$ "
+export GOROOT=/home/ubuntu/opt/go
+export GOPATH=/home/ubuntu/code/go
+export PATH=/home/ubuntu/opt/go/bin:$PATH
+export PATH=/home/ubuntu/code/go/bin:$PATH
+. /home/vagrant/miniconda3/etc/profile.d/conda.sh

@@ -1,0 +1,49 @@
+---
+- name: Install machine learning libraries from conda main repos
+  command: "{{ mc3path }}/bin/conda install {{ item }}"
+  args:
+      creates: "{{ home }}/miniconda3/lib/python3.7/site-packages/{{ item }}/__init__.py"
+  with_items:
+      - numpy
+      - scipy
+      - matplotlib
+      - tensorflow==2.0
+      - jupyter
+      - scikit-learn
+      - ipykernel
+      - cloudpickle
+      - spyder
+      - pydot
+      - pillow
+      - pandas
+      - statsmodels
+      - tqdm
+      - h5py
+      - plotly
+- name: Install machine learning libraries from conda-forge repos
+  command: "{{ mc3path }}/bin/conda install -c conda-forge {{ item }}"
+  args:
+      creates: "{{ home }}/miniconda3/lib/python3.7/site-packages/{{ item }}/__init__.py"
+  with_items:
+      - gpy
+      - fbprophet
+      - astropy
+      - ipylab
+- name: Put Spyder shortcut on Desktop
+  copy:
+      src: "{{ item }}"
+      dest: "{{ home }}/Desktop/{{ item }}"
+      mode: 0775
+  with_items:
+      - Spyder.desktop
+      - JupyterNotebook.desktop
+- name: Ensure spyder config folder exists
+  file:
+      path: "{{ home }}/.config/spyder-py3"
+      state: directory
+      mode: 0755
+- name: Set default color scheme to scintilla
+  lineinfile:
+      path: "{{ home }}/.config/spyder-py3/spyder.ini"
+      regexp: '^selected ='
+      line: 'selected = scintilla'

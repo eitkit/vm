@@ -1,0 +1,24 @@
+---
+- name: Create installation directory
+  file:
+      path: "{{ home }}/install"
+      state: directory
+- name: Download miniconda3
+  get_url:
+      url: https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+      dest: "{{ home }}/install/miniconda3-latest-linux-x86_64.sh"
+      mode: 0540
+- name: Run the miniconda installation script (in batch mode)
+  command: install/miniconda3-latest-linux-x86_64.sh -b
+  args:
+      creates: "{{ home }}/miniconda3/LICENSE.txt"
+- name: Add conda config files
+  lineinfile:
+      path: "{{ home }}/.bashrc_mods"
+      regexp: 'miniconda3'
+      line: ". {{ home }}/miniconda3/etc/profile.d/conda.sh"
+- name: Activate conda in bashrc
+  lineinfile:
+      path: "{{ home }}/.bashrc_mods"
+      regexp: '^conda'
+      line: "conda activate"

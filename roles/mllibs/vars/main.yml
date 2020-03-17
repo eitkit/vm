@@ -1,0 +1,2 @@
+---
+mc3path: "{{ home }}/miniconda3"
