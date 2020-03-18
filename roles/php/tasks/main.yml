@@ -2,7 +2,6 @@
 - name: Install stuff from Aptitude
   apt: name={{ item }} state=installed
   with_items:
-    - software-properties-common # Needed for HHVM install
     - composer
     - php-apcu
     - php-cli
@@ -11,6 +10,7 @@
     - php-mbstring
     - php-xdebug
     - phpunit
+  become: true
 #- name: Add HHVM repo key
 #  apt_key:
 #      keyserver=keyserver.ubuntu.com
