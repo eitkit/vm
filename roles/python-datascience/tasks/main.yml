@@ -28,11 +28,11 @@
       - JupyterNotebook.desktop
 - name: Ensure spyder config folder exists
   file:
-      path: "{{ home }}/.config/spyder-py3"
+      path: "{{ home }}/.config/spyder-py3/config"
       state: directory
       mode: 0755
 - name: Set default color scheme to scintilla
   lineinfile:
-      path: "{{ home }}/.config/spyder-py3/spyder.ini"
+      path: "{{ home }}/.config/spyder-py3/config/spyder.ini"
       regexp: '^selected ='
       line: 'selected = scintilla'
