@@ -3,6 +3,7 @@
   apt: name={{ item }} state=installed
   with_items:
     - nginx
+  become: true
 - name: Add custom Nginx sites/default config file
   copy:
       src=nginx-sites-default
@@ -10,7 +11,9 @@
       owner=root
       group=root
       mode=0644
+  become: true
 - name: Restart Nginx
   service:
       name=nginx
       state=restarted
+  become: true
