@@ -7,42 +7,47 @@
 - name: Unpack MediaWiki tarball
   unarchive:
     src=/vagrant/mediawiki-{{mwver_minor}}.tar.gz
-    dest=/vagrant
+    dest=/vagrant/mediawiki-{{mwver_minor}}
     copy=no # Don't copy from local machine
-- name: Rename unarchived MediaWiki folder (to w)
+- name: Unpack unarchived MediaWiki folder (to w folder in web root)
   command:
-    creates=/vagrant/w
-    mv /vagrant/mediawiki-{{mwver_minor}} /vagrant/w
-- name: Symlink MediaWiki folder into webserver folder
-  file:
-    src=/vagrant/w
-    dest=/var/www/html/w
-    state=link
+    creates={{ web_root }}/w
+    cp -r /vagrant/mediawiki-{{mwver_minor}} {{ web_root }}/w
+  become: true
 - name: Create MySQL database
   mysql_db:
     name=smw
     state=present
+    login_user=root
+    login_password=""
+  become: true
 - name: Create MySQL user
   mysql_user:
     name=smw
     password=changethis
     priv=smw.*:ALL
     state=present
+    login_user=root
+    login_password=""
+  become: true
 - name: Change user & group for wiki folder
   file:
-    path=/vagrant/w
+    path='{{ web_root }}/w'
     owner=www-data
     group=www-data
     recurse=yes
+  become: true
 - name: Install MediaWiki database
   command:
-      php /var/www/html/w/maintenance/install.php --scriptpath=/w --dbname=smw --dbuser=smw --dbpass=changethis --installdbuser=root --installdbpass= --pass=changethis MW admin
-      creates=/var/www/html/w/LocalSettings.php
+    php '{{ web_root }}/w/maintenance/install.php' --scriptpath=/w --dbname=smw --dbuser=smw --dbpass=changethis --installdbuser=root --installdbpass="" --dbserver=localhost --pass=changethis MW admin
+    creates='{{ web_root }}/w/LocalSettings.php'
+  become: true
 - name: Change user & group of LocalSettings.php
   file:
-    path=/var/www/html/w/LocalSettings.php
+    path='{{ web_root }}/w/LocalSettings.php'
     owner=www-data
     group=www-data
+  become: true
 - name: Print location of wiki
   debug:
     msg: "You can see your wiki, by entering in a browser: http://localhost:8080/w/index.php/Main_Page"

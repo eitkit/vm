@@ -3,5 +3,6 @@
   apt: name={{ item }} state=installed
   with_items:
     - mysql-server
+    - python-mysqldb
     - php-mysql
   become: true
