@@ -4,6 +4,7 @@
     command: "require"
     arguments: "mediawiki/semantic-media-wiki {{ smwver_minor }} --update-no-dev"
     working_dir: "{{ mw_dir }}"
+  become: true
 - name: Update MediaWiki database
   command: php {{ mw_dir }}/maintenance/update.php
 - name: Enable Semantic MediaWiki in MediaWiki settings file
@@ -11,20 +12,24 @@
     line="enableSemantics( 'localhost:8080' );"
     dest={{ mw_dir }}/LocalSettings.php
     state=present
+  become: true
 - name: Enable the Factbox to be shown on pages with semantic content
   lineinfile:
     line="$smwgShowFactbox = SMW_FACTBOX_NONEMPTY;"
     dest={{ mw_dir }}/LocalSettings.php
     state=present
+  become: true
 - name: Create folder for PageForms
   file:
       dest={{ mw_dir }}/extensions/PageForms
       state=directory
+  become: true
 - name: Checkout Page Forms via git
   git:
       repo=https://gerrit.wikimedia.org/r/p/mediawiki/extensions/PageForms
       dest={{ mw_dir }}/extensions/PageForms
       update=yes
+  become: true
 #- name: Download Semantic Forms zip file
 #  get_url:
 #      url=https://github.com/wikimedia/mediawiki-extensions-SemanticForms/archive/3.6.zip
@@ -40,3 +45,14 @@
     line='include_once "$IP/extensions/PageForms/PageForms.php";'
     dest={{ mw_dir }}/LocalSettings.php
     state=present
+  become: true
+- name: Setup SMW database tables
+  command: php {{ mw_dir }}/extensions/SemanticMediaWiki/maintenance/setupStore.php
+  become: true
+  creates: '{{ mw_dir }}/extensions/SemanticMediaWiki/.smw.json'
+- name: Change user & group of the web root folder
+  file:
+    path={{ web_root }}
+    owner=www-data
+    group=www-data
+

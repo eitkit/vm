@@ -1,3 +1,5 @@
 ---
-smwver_major: '2.5'
-smwver_minor: '2.5.4'
+web_root: '/var/www/html'
+mw_dir: '{{ web_root }}/w'
+smwver_major: '3.1'
+smwver_minor: '3.1.5'
