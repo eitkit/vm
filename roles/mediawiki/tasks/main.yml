@@ -44,7 +44,7 @@
   become: true
 - name: Change user & group of LocalSettings.php
   file:
-    path='{{ web_root }}/w/LocalSettings.php'
+    path={{ web_root }}
     owner=www-data
     group=www-data
   become: true
