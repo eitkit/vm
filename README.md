@@ -13,12 +13,14 @@ gathering data and get an overview of the situation.
 Currently it packages basic python-based data science tools for data analysis,
 as well as MediaWiki, and SemanticMediaWiki for data collection and curation.
 
+![Screenshot](screenshot.png)
+
 Further ideas for how it could be used and extended, are welcome as issues to
 the project.
 
 ## Technical overview
 
-It uses [Vagrant](https://www.vagrantup.com/) and [Ansible](https://www.ansible.com/)
+EITKit uses [Vagrant](https://www.vagrantup.com/) and [Ansible](https://www.ansible.com/)
 to define a configuration for the virtual machine that can easily be executed using
 a single command (given that you have the required dependencies installed):
 
