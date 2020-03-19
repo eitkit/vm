@@ -1,10 +1,28 @@
 # Emergency IT kit (E-IT Kit) Virtual Machine
 
-Virtual Machine with IT software and documentation for emergency situations.
+The Emergency IT kit (EITKit, for short) is a Virtual Machine (could be
+extended to other packaging mechanisms like docker, zip files etc later) with
+basic software and documentation to be able to do data collection, curation,
+summarization and analysis in emergency situation.
+
+The ideas for how it could be used are developing, but it is hoped it could be used
+to support coordination centers, "dispatch centrals" and similar functions during
+emergency situation, where it is crucial to be able to quickly and flexibly start
+gathering data and get an overview of the situation.
+
+Currently it packages basic python-based data science tools for data analysis,
+as well as MediaWiki, and SemanticMediaWiki for data collection and curation.
+
+Further ideas for how it could be used and extended, are welcome as issues to
+the project.
+
+## Technical overview
 
 It uses [Vagrant](https://www.vagrantup.com/) and [Ansible](https://www.ansible.com/)
 to define a configuration for the virtual machine that can easily be executed using
 a single command (given that you have the required dependencies installed):
+
+## Get started
 
 ```
 vagrant up
