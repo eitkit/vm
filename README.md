@@ -8,7 +8,12 @@ summarization and analysis in emergency situation.
 The ideas for how it could be used are developing, but it is hoped it could be used
 to support coordination centers, "dispatch centrals" and similar functions during
 emergency situation, where it is crucial to be able to quickly and flexibly start
-gathering data and get an overview of the situation.
+gathering data and get an overview of the situation, even when internet connectivity
+might not be available.
+
+The idea is that people should be able to keep a copy on a USB-drive, together with
+the Virtualbox software, for being able to fire up the VM on any available computer,
+regardless of operating system.
 
 Currently it packages basic python-based data science tools for data analysis,
 as well as MediaWiki, and SemanticMediaWiki for data collection and curation.
